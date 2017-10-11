@@ -1,21 +1,35 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.BrowserType;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
 
-  FirefoxDriver wd;
+  WebDriver wd;
 
   private SessionHelper sessionHelper;
-
   private NavigayionHelper navigationHelper;
   private GroupHelper groupHelper;
+  private String browser;
+
+  public ApplicationManager(String browser) {
+    this.browser = browser;
+  }
 
   public void init() {
-    System.setProperty("webdriver.gecko.driver", "C:/Tools/geckodriver-v0.18.0-win64/bin/geckodriver.exe");
-    wd = new FirefoxDriver();
+    System.setProperty("web.driver.gecko.driver", "C:/Tools/gecko.driver-v0.18.0-win64/bin/gecko.driver.exe");
+
+    if (Objects.equals(browser,BrowserType.FIREFOX)) wd = new FirefoxDriver();
+    else if (Objects.equals(browser,BrowserType.CHROME)) wd = new ChromeDriver();
+    else if (Objects.equals(browser,BrowserType.IE)) wd = new InternetExplorerDriver();
+
+
     wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigayionHelper(wd);
